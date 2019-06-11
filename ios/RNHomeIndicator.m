@@ -1,14 +1,6 @@
 
 #import "RNHomeIndicator.h"
-
-@implementation HomeIndicatorViewController
-
-- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
-    return self.preferredScreenEdge;
-}
-
-@end
-
+#import "HomeIndicatorViewController.h"
 
 @implementation RNHomeIndicator
 
@@ -19,19 +11,19 @@
 
 - (void) setPreferredScreenEdge: (UIRectEdge) newValue {
     HomeIndicatorViewController *rootViewController = [self getHomeIndicatorViewController];
+    if (rootViewController == nil) {
+        NSLog(@"ERROR - RNHomeIndicator.m: rootViewController is not of type HomeIndicatorViewController as expected.");
+    }
 
     rootViewController.preferredScreenEdge = newValue;
-    if (@available(iOS 11.0, *)) {
-        [rootViewController setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
-    }
+    [rootViewController setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
 }
 
 - (HomeIndicatorViewController*) getHomeIndicatorViewController {
     UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-    NSAssert(
-        [rootViewController isKindOfClass:[HomeIndicatorViewController class]],
-        @"rootViewController is not of type HomeIndicatorViewController as expected."
-    );
+    if (![rootViewController isKindOfClass:[HomeIndicatorViewController class]]) {
+        return nil;
+    }
     return (HomeIndicatorViewController*) rootViewController;
 }
 
@@ -50,7 +42,7 @@ RCT_EXPORT_METHOD(alwaysVisible) {
 }
 
 RCT_EXPORT_METHOD(autoEdgeProtection) {
-    [self setPreferredScreenEdge:UIRectEdgeBottom];
+    [self setPreferredScreenEdge:UIRectEdgeAll];
 }
 
 @end
