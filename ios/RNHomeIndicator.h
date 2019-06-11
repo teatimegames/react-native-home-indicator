@@ -9,7 +9,7 @@
 
 
 @interface HomeIndicatorViewController : UIViewController
-@property BOOL prefersAutoHidden;
+@property UIRectEdge preferredScreenEdge;
 @end
 
 @interface RNHomeIndicator : NSObject <RCTBridgeModule>

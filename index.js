@@ -7,7 +7,7 @@ const isIos = Platform.OS === 'ios'
 
 
 const propTypes = {
-    autoHidden: PropTypes.bool.isRequired,
+    autoEdgeProtection: PropTypes.bool.isRequired,
 }
 
 export class HomeIndicator extends Component {
@@ -21,17 +21,17 @@ export class HomeIndicator extends Component {
     componentDidMount() {
         if (!isIos) return
 
-        const { autoHidden } = this.props
+        const { autoEdgeProtection } = this.props
         HomeIndicator.propsHistory.push(this.props)
 
-        updateNativeHomeIndicator({ autoHidden })
+        updateNativeHomeIndicator({ autoEdgeProtection })
     }
 
     componentWillUnmount() {
         if (!isIos) return
 
-        const { autoHidden } = HomeIndicator.popAndGetPreviousProps()
-        updateNativeHomeIndicator({ autoHidden })
+        const { autoEdgeProtection } = HomeIndicator.popAndGetPreviousProps()
+        updateNativeHomeIndicator({ autoEdgeProtection })
     }
 
     render() { return null }
@@ -39,15 +39,12 @@ export class HomeIndicator extends Component {
 
 HomeIndicator.propTypes = propTypes
 
-function updateNativeHomeIndicator({ autoHidden = false }) {
-    if (autoHidden) {
-        RNHomeIndicator.autoHidden()
+function updateNativeHomeIndicator({ autoEdgeProtection = false }) {
+    if (autoEdgeProtection) {
+        RNHomeIndicator.autoEdgeProtection()
     } else {
         RNHomeIndicator.alwaysVisible()
     }
 }
 
-
-// keep this for backwards compatibility
-const PrefersHomeIndicatorAutoHidden = () => <HomeIndicator autoHidden />
-export default PrefersHomeIndicatorAutoHidden
+export default HomeIndicator

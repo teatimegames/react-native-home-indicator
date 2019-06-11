@@ -3,8 +3,8 @@
 
 @implementation HomeIndicatorViewController
 
-- (BOOL)prefersHomeIndicatorAutoHidden {
-    return self.prefersAutoHidden;
+- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
+    return self.preferredScreenEdge;
 }
 
 @end
@@ -13,16 +13,16 @@
 @implementation RNHomeIndicator
 
 - (id) init {
-    [self setPrefersAutoHidden:NO];
+    [self setPreferredScreenEdge:UIRectEdgeNone];
     return [super init];
 }
 
-- (void) setPrefersAutoHidden: (BOOL) newValue {
+- (void) setPreferredScreenEdge: (UIRectEdge) newValue {
     HomeIndicatorViewController *rootViewController = [self getHomeIndicatorViewController];
 
-    rootViewController.prefersAutoHidden = newValue;
+    rootViewController.preferredScreenEdge = newValue;
     if (@available(iOS 11.0, *)) {
-        [rootViewController setNeedsUpdateOfHomeIndicatorAutoHidden];
+        [rootViewController setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     }
 }
 
@@ -46,11 +46,11 @@
 RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(alwaysVisible) {
-    [self setPrefersAutoHidden:NO];
+    [self setPreferredScreenEdge:UIRectEdgeNone];
 }
 
-RCT_EXPORT_METHOD(autoHidden) {
-    [self setPrefersAutoHidden:YES];
+RCT_EXPORT_METHOD(autoEdgeProtection) {
+    [self setPreferredScreenEdge:UIRectEdgeBottom];
 }
 
 @end
